@@ -1,0 +1,398 @@
+@extends('layouts.admin')
+@section('title', 'Edit Menu')
+
+@section('content')
+<style>
+.selectgroup-pills .selectgroup-item{flex-grow: 1!important;    margin-right: 0!important;}
+.selectgroup-pills input:checked+span{border-radius: 0px !important;}.selectgroup-pills .selectgroup-button {
+    border-radius: 0px !important;
+}
+</style>
+<div class="main-content">
+	<section class="section">
+		<div class="section-body">
+			{{ Form::open(array('url' => 'menus/edit', 'name'=>"add-learning", 'autocomplete'=>'off', "enctype"=>"multipart/form-data")) }}
+			 {{ Form::hidden('id', @$fetchedData->id) }}  
+            <div class="row">
+				<div class="col-12 col-md-12 col-lg-12">
+					<div class="server-error"> 
+						@include('../Elements/flash-message')
+					</div>
+				</div>
+				<div class="col-9 col-md-9 col-lg-9">
+					<div class="card">
+						<div class="card-header"> 
+							<h4>Edit Menu</h4>
+						</div>
+						<div class="card-body">
+							
+							<div class="form-group">
+								<label for="name">Name</label>
+								<input type="text" value="{{@$fetchedData->menu_name}}" name="name" data-valid="required" class="form-control"/>
+								@if ($errors->has('name'))
+									<span class="custom-error" role="alert">
+										<strong>{{ @$errors->first('name') }}</strong>
+									</span> 
+								@endif
+							</div>
+							<?php
+							$menuhour = unserialize($fetchedData->menu_hours);
+							$marray = array();
+							if(!empty($menuhour)){
+								$marray = $menuhour;
+							}
+							?>
+							<div class="more_hours">
+							<?php for($i = 0; $i< count($marray); $i++){ ?>
+								<div class="mydiv" style="padding: 5px 10px 0px 20px;margin-bottom: 24px;border-radius: 4px;border: 2px solid rgb(224, 224, 224);">
+							 <div class="form-group">
+							 <label class="form-label">Menu Hours</label>
+							 <div class="selectgroup selectgroup-pills">
+								  
+								  <div class="selectgroup w-100">
+									<label class="selectgroup-item">
+									  <input type="checkbox" <?php if(in_array(0,$menuhour[$i]['weekdays'])){ echo 'checked'; } ?> name="menu_hour[{{$i}}][]" value="0" class="selectgroup-input">
+									  <span class="selectgroup-button">Mon</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" <?php if(in_array(1,$menuhour[$i]['weekdays'])){ echo 'checked'; } ?> name="menu_hour[{{$i}}][]" value="1" class="selectgroup-input">
+									  <span class="selectgroup-button">Tue</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" <?php if(in_array(2,$menuhour[$i]['weekdays'])){ echo 'checked'; } ?> name="menu_hour[{{$i}}][]" value="2" class="selectgroup-input">
+									  <span class="selectgroup-button">Wed</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" <?php if(in_array(3,$menuhour[$i]['weekdays'])){ echo 'checked'; } ?> name="menu_hour[{{$i}}][]" value="3" class="selectgroup-input">
+									  <span class="selectgroup-button">Thu</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" <?php if(in_array(4,$menuhour[$i]['weekdays'])){ echo 'checked'; } ?> name="menu_hour[{{$i}}][]" value="4" class="selectgroup-input">
+									  <span class="selectgroup-button">Fri</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" <?php if(in_array(5,$menuhour[$i]['weekdays'])){ echo 'checked'; } ?> name="menu_hour[{{$i}}][]" value="5" class="selectgroup-input">
+									  <span class="selectgroup-button">Sat</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" <?php if(in_array(6,$menuhour[$i]['weekdays'])){ echo 'checked'; } ?> name="menu_hour[{{$i}}][]" value="6" class="selectgroup-input">
+									  <span class="selectgroup-button">Sun</span>
+									</label>
+							</div>
+							</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+								 <div class="form-group">
+								 <label>Start Time</label>
+									<select class="form-control" name="start_time[{{$i}}][]">
+										 <option <?php if($menuhour[$i]['start_time'] == '00:00'){ echo 'selected'; } ?> value="00:00">12.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '00:30'){ echo 'selected'; } ?> value="00:30">12.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '01:00'){ echo 'selected'; } ?> value="01:00">01.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '01:30'){ echo 'selected'; } ?> value="01:30">01.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '02:00'){ echo 'selected'; } ?> value="02:00">02.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '02:30'){ echo 'selected'; } ?> value="02:30">02.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '03:00'){ echo 'selected'; } ?> value="03:00">03.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '03:30'){ echo 'selected'; } ?> value="03:30">03.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '04:00'){ echo 'selected'; } ?> value="04:00">04.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '04:30'){ echo 'selected'; } ?> value="04:30">04.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '05:00'){ echo 'selected'; } ?> value="05:00">05.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '05:30'){ echo 'selected'; } ?> value="05:30">05.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '06:00'){ echo 'selected'; } ?> value="06:00">06.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '06:30'){ echo 'selected'; } ?> value="06:30">06.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '07:00'){ echo 'selected'; } ?> value="07:00">07.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '07:30'){ echo 'selected'; } ?> value="07:30">07.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '08:00'){ echo 'selected'; } ?> value="08:00">08.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '08:30'){ echo 'selected'; } ?> value="08:30">08.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '09:00'){ echo 'selected'; } ?> value="09:00">09.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '09:30'){ echo 'selected'; } ?> value="09:30">09.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '10:00'){ echo 'selected'; } ?> value="10:00">10.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '10:30'){ echo 'selected'; } ?> value="10:30">10.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '11:00'){ echo 'selected'; } ?> value="11:00">11.00 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '11:30'){ echo 'selected'; } ?> value="11:30">11.30 AM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '12:00'){ echo 'selected'; } ?> value="12:00">12.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '12:30'){ echo 'selected'; } ?> value="12:30">12.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '13:00'){ echo 'selected'; } ?> value="13:00">01.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '13:30'){ echo 'selected'; } ?> value="13:30">01.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '14:00'){ echo 'selected'; } ?> value="14:00">02.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '14:30'){ echo 'selected'; } ?> value="14:30">02.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '15:00'){ echo 'selected'; } ?> value="15:00">03.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '15:30'){ echo 'selected'; } ?> value="15:30">03.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '16:00'){ echo 'selected'; } ?> value="16:00">04.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '16:30'){ echo 'selected'; } ?> value="16:30">04.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '17:00'){ echo 'selected'; } ?> value="17:00">05.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '17:30'){ echo 'selected'; } ?> value="17:30">05.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '18:00'){ echo 'selected'; } ?> value="18:00">06.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '18:30'){ echo 'selected'; } ?> value="18:30">06.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '19:00'){ echo 'selected'; } ?> value="19:00">07.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '19:30'){ echo 'selected'; } ?> value="19:30">07.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '20:00'){ echo 'selected'; } ?> value="20:00">08.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '20:30'){ echo 'selected'; } ?> value="20:30">08.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '21:00'){ echo 'selected'; } ?> value="21:00">09.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '21:30'){ echo 'selected'; } ?> value="21:30">09.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '22:00'){ echo 'selected'; } ?> value="22:00">10.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '22:30'){ echo 'selected'; } ?> value="22:30">10.30 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '23:00'){ echo 'selected'; } ?> value="23:00">11.00 PM</option>
+										<option <?php if($menuhour[$i]['start_time'] == '23:30'){ echo 'selected'; } ?> value="23:30">11.30 PM</option>
+									</select>
+								</div>
+								</div>
+								<div class="col-md-6">
+								 <div class="form-group">
+								 <label>Start Time</label>
+									<select class="form-control" name="end_time[{{$i}}][]">
+										 <option <?php if($menuhour[$i]['end_time'] == '00:00'){ echo 'selected'; } ?> value="00:00">12.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '00:30'){ echo 'selected'; } ?> value="00:30">12.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '01:00'){ echo 'selected'; } ?> value="01:00">01.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '01:30'){ echo 'selected'; } ?> value="01:30">01.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '02:00'){ echo 'selected'; } ?> value="02:00">02.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '02:30'){ echo 'selected'; } ?> value="02:30">02.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '03:00'){ echo 'selected'; } ?> value="03:00">03.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '03:30'){ echo 'selected'; } ?> value="03:30">03.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '04:00'){ echo 'selected'; } ?> value="04:00">04.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '04:30'){ echo 'selected'; } ?> value="04:30">04.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '05:00'){ echo 'selected'; } ?> value="05:00">05.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '05:30'){ echo 'selected'; } ?> value="05:30">05.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '06:00'){ echo 'selected'; } ?> value="06:00">06.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '06:30'){ echo 'selected'; } ?> value="06:30">06.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '07:00'){ echo 'selected'; } ?> value="07:00">07.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '07:30'){ echo 'selected'; } ?> value="07:30">07.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '08:00'){ echo 'selected'; } ?> value="08:00">08.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '08:30'){ echo 'selected'; } ?> value="08:30">08.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '09:00'){ echo 'selected'; } ?> value="09:00">09.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '09:30'){ echo 'selected'; } ?> value="09:30">09.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '10:00'){ echo 'selected'; } ?> value="10:00">10.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '10:30'){ echo 'selected'; } ?> value="10:30">10.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '11:00'){ echo 'selected'; } ?> value="11:00">11.00 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '11:30'){ echo 'selected'; } ?> value="11:30">11.30 AM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '12:00'){ echo 'selected'; } ?> value="12:00">12.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '12:30'){ echo 'selected'; } ?> value="12:30">12.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '13:00'){ echo 'selected'; } ?> value="13:00">01.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '13:30'){ echo 'selected'; } ?> value="13:30">01.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '14:00'){ echo 'selected'; } ?> value="14:00">02.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '14:30'){ echo 'selected'; } ?> value="14:30">02.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '15:00'){ echo 'selected'; } ?> value="15:00">03.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '15:30'){ echo 'selected'; } ?> value="15:30">03.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '16:00'){ echo 'selected'; } ?> value="16:00">04.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '16:30'){ echo 'selected'; } ?> value="16:30">04.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '17:00'){ echo 'selected'; } ?> value="17:00">05.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '17:30'){ echo 'selected'; } ?> value="17:30">05.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '18:00'){ echo 'selected'; } ?> value="18:00">06.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '18:30'){ echo 'selected'; } ?> value="18:30">06.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '19:00'){ echo 'selected'; } ?> value="19:00">07.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '19:30'){ echo 'selected'; } ?> value="19:30">07.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '20:00'){ echo 'selected'; } ?> value="20:00">08.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '20:30'){ echo 'selected'; } ?> value="20:30">08.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '21:00'){ echo 'selected'; } ?> value="21:00">09.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '21:30'){ echo 'selected'; } ?> value="21:30">09.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '22:00'){ echo 'selected'; } ?> value="22:00">10.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '22:30'){ echo 'selected'; } ?> value="22:30">10.30 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '23:00'){ echo 'selected'; } ?> value="23:00">11.00 PM</option>
+										<option <?php if($menuhour[$i]['end_time'] == '23:30'){ echo 'selected'; } ?> value="23:30">11.30 PM</option>
+									</select>
+								</div>
+								</div>
+							</div>
+                    </div>	
+							<?php } ?>
+							</div>
+							<div class="form-group">
+								<a href="javascript:;" class="add_more_hours">Add More Days and Time</a>
+							</div>				
+						</div> 
+					</div>
+				</div>
+				<div class="col-3 col-md-3 col-lg-3">
+					<div class="card">
+						
+						<div class="card-footer"> 
+							<a style="margin-right:5px;" href="{{route('admin.menus.index')}}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back</a>
+							<button type="button" onClick="customValidate('add-learning')" class="btn btn-success pull-right">Save</button>
+						</div>
+					</div>
+					
+				</div> 
+            </div>
+			{{ Form::close() }}
+		</div>
+	</section> 
+</div>
+<div class="morhoursdata" style="display:none;">
+ <div class="mydiv" style="padding: 5px 10px 0px 20px;margin-bottom: 24px;border-radius: 4px;border: 2px solid rgb(224, 224, 224);">
+							 <div class="form-group">
+							 <label class="form-label">Menu Hours</label>
+							 <div class="selectgroup selectgroup-pills">
+								  
+								  <div class="selectgroup w-100">
+									<label class="selectgroup-item">
+									  <input type="checkbox" name="menu_hour[]" value="0" class="selectgroup-input menuh">
+									  <span class="selectgroup-button">Mon</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" name="menu_hour[]" value="1" class="selectgroup-input menuh">
+									  <span class="selectgroup-button">Tue</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" name="menu_hour[]" value="2" class="selectgroup-input menuh">
+									  <span class="selectgroup-button">Wed</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" name="menu_hour[]" value="3" class="selectgroup-input menuh">
+									  <span class="selectgroup-button">Thu</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" name="menu_hour[]" value="4" class="selectgroup-input menuh">
+									  <span class="selectgroup-button">Fri</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" name="menu_hour[]" value="5" class="selectgroup-input menuh">
+									  <span class="selectgroup-button">Sat</span>
+									</label>
+									<label class="selectgroup-item">
+									  <input type="checkbox" name="menu_hour[]" value="6" class="selectgroup-input menuh">
+									  <span class="selectgroup-button">Sun</span>
+									</label>
+							</div>
+							</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+								 <div class="form-group">
+								 <label>Start Time</label>
+									<select class="form-control strtime" name="start_time[]">
+										 <option selected="" value="00:00">12.00 AM</option>
+										<option value="00:30">12.30 AM</option>
+										<option value="01:00">01.00 AM</option>
+										<option value="01:30">01.30 AM</option>
+										<option value="02:00">02.00 AM</option>
+										<option value="02:30">02.30 AM</option>
+										<option value="03:00">03.00 AM</option>
+										<option value="03:30">03.30 AM</option>
+										<option value="04:00">04.00 AM</option>
+										<option value="04:30">04.30 AM</option>
+										<option value="05:00">05.00 AM</option>
+										<option value="05:30">05.30 AM</option>
+										<option value="06:00">06.00 AM</option>
+										<option value="06:30">06.30 AM</option>
+										<option value="07:00">07.00 AM</option>
+										<option value="07:30">07.30 AM</option>
+										<option value="08:00">08.00 AM</option>
+										<option value="08:30">08.30 AM</option>
+										<option value="09:00">09.00 AM</option>
+										<option value="09:30">09.30 AM</option>
+										<option value="10:00">10.00 AM</option>
+										<option value="10:30">10.30 AM</option>
+										<option value="11:00">11.00 AM</option>
+										<option value="11:30">11.30 AM</option>
+										<option value="12:00">12.00 PM</option>
+										<option value="12:30">12.30 PM</option>
+										<option value="13:00">01.00 PM</option>
+										<option value="13:30">01.30 PM</option>
+										<option value="14:00">02.00 PM</option>
+										<option value="14:30">02.30 PM</option>
+										<option value="15:00">03.00 PM</option>
+										<option value="15:30">03.30 PM</option>
+										<option value="16:00">04.00 PM</option>
+										<option value="16:30">04.30 PM</option>
+										<option value="17:00">05.00 PM</option>
+										<option value="17:30">05.30 PM</option>
+										<option value="18:00">06.00 PM</option>
+										<option value="18:30">06.30 PM</option>
+										<option value="19:00" >07.00 PM</option>
+										<option value="19:30">07.30 PM</option>
+										<option value="20:00">08.00 PM</option>
+										<option value="20:30">08.30 PM</option>
+										<option value="21:00">09.00 PM</option>
+										<option value="21:30">09.30 PM</option>
+										<option value="22:00">10.00 PM</option>
+										<option value="22:30">10.30 PM</option>
+										<option value="23:00">11.00 PM</option>
+										<option value="23:30">11.30 PM</option>
+									</select>
+								</div>
+								</div>
+								<div class="col-md-6">
+								 <div class="form-group">
+								 <label>Start Time</label>
+									<select class="form-control endtime" name="end_time[]">
+										 <option selected="" value="00:00">12.00 AM</option>
+										<option value="00:30">12.30 AM</option>
+										<option value="01:00">01.00 AM</option>
+										<option value="01:30">01.30 AM</option>
+										<option value="02:00">02.00 AM</option>
+										<option value="02:30">02.30 AM</option>
+										<option value="03:00">03.00 AM</option>
+										<option value="03:30">03.30 AM</option>
+										<option value="04:00">04.00 AM</option>
+										<option value="04:30">04.30 AM</option>
+										<option value="05:00">05.00 AM</option>
+										<option value="05:30">05.30 AM</option>
+										<option value="06:00">06.00 AM</option>
+										<option value="06:30">06.30 AM</option>
+										<option value="07:00">07.00 AM</option>
+										<option value="07:30">07.30 AM</option>
+										<option value="08:00">08.00 AM</option>
+										<option value="08:30">08.30 AM</option>
+										<option value="09:00">09.00 AM</option>
+										<option value="09:30">09.30 AM</option>
+										<option value="10:00">10.00 AM</option>
+										<option value="10:30">10.30 AM</option>
+										<option value="11:00">11.00 AM</option>
+										<option value="11:30">11.30 AM</option>
+										<option value="12:00">12.00 PM</option>
+										<option value="12:30">12.30 PM</option>
+										<option value="13:00">01.00 PM</option>
+										<option value="13:30">01.30 PM</option>
+										<option value="14:00">02.00 PM</option>
+										<option value="14:30">02.30 PM</option>
+										<option value="15:00">03.00 PM</option>
+										<option value="15:30">03.30 PM</option>
+										<option value="16:00">04.00 PM</option>
+										<option value="16:30">04.30 PM</option>
+										<option value="17:00">05.00 PM</option>
+										<option value="17:30">05.30 PM</option>
+										<option value="18:00">06.00 PM</option>
+										<option value="18:30">06.30 PM</option>
+										<option value="19:00">07.00 PM</option>
+										<option value="19:30">07.30 PM</option>
+										<option value="20:00">08.00 PM</option>
+										<option value="20:30">08.30 PM</option>
+										<option value="21:00">09.00 PM</option>
+										<option value="21:30">09.30 PM</option>
+										<option value="22:00">10.00 PM</option>
+										<option value="22:30">10.30 PM</option>
+										<option value="23:00">11.00 PM</option>
+										<option value="23:30">11.30 PM</option>
+									</select>
+								</div>
+								</div>
+							</div>
+                    </div>	
+</div>
+@endsection
+@section('scripts')
+<script>
+$(function() {
+   
+	$(document).delegate('.add_more_hours', 'click', function(){
+		
+		
+		$('.more_hours').append($('.morhoursdata').html());
+		
+		changename();
+	});
+	function changename(){
+		var more_hours = 0;
+		$('.more_hours .mydiv').each(function(){
+			$(this).find('.menuh').attr('name', 'menu_hour['+more_hours+'][]');
+			$(this).find('.endtime').attr('name', 'end_time['+more_hours+'][]');
+			$(this).find('.strtime').attr('name', 'start_time['+more_hours+'][]');
+			more_hours++;
+		})
+	}
+	$(document).delegate('.remove_item', 'click', function(){
+		$(this).parent().parent().parent().remove();
+	});
+});
+</script>
+@endsection
